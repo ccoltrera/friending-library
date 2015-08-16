@@ -36,8 +36,10 @@ module.exports = function(router) {
       .exec()
       .then(function(bookDoc) {
         output = bookDoc;
-        return User.findByIdAndUpdate(userId) // Are we actually updating anything here?
-          .exec();
+        return User.findByIdAndUpdate(userId,
+          {
+            $pull: {books: bookId}
+          }).exec();
       }, function(err) {
         throw err;
       })
