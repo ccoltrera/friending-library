@@ -26,8 +26,8 @@ Models:
 User:
 
 x friends: [{type: String, ref: User}]
-x fr_requests_in: [{type: String, ref: User}]
-x fr_requests_out: [{type: String, ref: User}]
+x friend_requests_in: [{type: String, ref: User}]
+x friend_requests_out: [{type: String, ref: User}]
 
 Server Routes:
 -------------
@@ -44,11 +44,11 @@ new:
 
 modify:
 
-- /api/books/available GET  : search friends' books
+x /api/books/available GET  : search friends' books
 - /api/self GET             : populate friends?
 - /api/self DELETE          : only allow if borrowing field empty,
                               remove refs in friends arrays,
-                              remove refs in fr_requests_in, _out,
+                              remove refs in friend_requests_in, _out,
                               remove refs in (book) requests,
                               remove books via method?
 - /api/books/:bookid DELETE : use method on model

@@ -112,31 +112,34 @@ describe("/api/books/available", function() {
   describe("GET", function() {
 
     before(function(done) {
-      User.create(testUsers[0])
+      var user = testUsers[0];
+      user.friends.push(testUsers[1]);
+      User.create(user)
         .then(function() {
           // testUsers[1] will be owner of testBooks[3]
-          var user = testUsers[1];
-          user.books.push(testBooks[3]._id);
-          return User.create(user);
-        }, function(err) { throw err; })
+          var friend = testUsers[1];
+          friend.books.push(testBooks[3]._id);
+          friend.friends.push(testUsers[0])
+          return User.create(friend);
+        })
         .then(function() {
           testBooks[0].owner = testUsers[0]._id;
           return Book.create(testBooks[0]);
-        }, function(err) { throw err; })
+        })
         .then(function() {
           testBooks[1].borrower = "your mom";
           return Book.create(testBooks[1]);
-        }, function(err) { throw err; })
+        })
         .then(function() {
           testBooks[2].request = "Yeah, I want that.";
           return Book.create(testBooks[2]);
-        }, function(err) { throw err; })
+        })
         .then(function() {
           // This is the book that should be returned in the test.
           // Its owner is testUsers[1].
           testBooks[3].owner = testUsers[1]._id;
           return Book.create(testBooks[3]);
-        }, function(err) { throw err; })
+        })
         .then(function() {
           done();
         }, function(err) { throw err; });
@@ -153,7 +156,7 @@ describe("/api/books/available", function() {
           expect(res).to.be.json;
           expect(res.body).to.have.property("length", 1);
           expect(res.body[0].title).to.equal(testBooks[3].title);
-          expect(res.body[0].owner.displayName).to.equal("David");
+          expect(res.body[0].owner.displayName).to.equal(testUsers[1].displayName);
           done();
         });
     });

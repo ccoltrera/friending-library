@@ -26,17 +26,17 @@ describe('/api/friends/:userid DELETE', function() {
 });
 
 describe('/api/friends/request POST', function() {
-  it('should add the user to the potential friend\'s "fr_requests_in" array, add the potential friend to the user\'s "fr_requests_out" array, and return a JSON success message');
+  it('should add the user to the potential friend\'s "friend_requests_in" array, add the potential friend to the user\'s "friend_requests_out" array, and return a JSON success message');
 });
 
 describe('/api/friends/request/:userid DELETE', function() {
-  it('should remove the user from the would-be friend\'s "fr_requests_in" array, remove the would-be friend from the user\'s "fr_requests_out" array, and return a JSON success message');
+  it('should remove the user from the would-be friend\'s "friend_requests_in" array, remove the would-be friend from the user\'s "friend_requests_out" array, and return a JSON success message');
 });
 
 describe('/api/friends/approve POST', function() {
-  it('should add the friend to the user\'s "friends" array, remove the friend from the user\'s "fr_requests_in" array, add the user to the friend\'s "friends" array, remove the user from the friend\'s "fr_requests_out" array, and return a JSON success message');
+  it('should add the friend to the user\'s "friends" array, remove the friend from the user\'s "friend_requests_in" array, add the user to the friend\'s "friends" array, remove the user from the friend\'s "friend_requests_out" array, and return a JSON success message');
 });
 
 describe('/api/friends/deny POST', function() {
-  it('should remove the user from the would-be friend\'s "fr_requests_out" array, remove the would-be friend from the user\'s "fr_requests_in" array, and return a JSON success message');
+  it('should remove the user from the would-be friend\'s "friend_requests_out" array, remove the would-be friend from the user\'s "friend_requests_in" array, and return a JSON success message');
 });

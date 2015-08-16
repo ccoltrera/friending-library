@@ -12,8 +12,8 @@ var userSchema = new mongoose.Schema({
   borrowing: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],
   requests: [{type: mongoose.Schema.Types.ObjectId, ref: "Book"}],
   friends: [{type: String, ref: "User"}],
-  fr_requests_in: [{type: String, ref: "User"}],
-  fr_requests_out: [{type: String, ref: "User"}]
+  friend_requests_in: [{type: String, ref: "User"}],
+  friend_requests_out: [{type: String, ref: "User"}]
 });
 
 userSchema.plugin(findOrCreate);
