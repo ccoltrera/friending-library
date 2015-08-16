@@ -10,7 +10,6 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/friending-l
   if (err) console.log(err);
   else console.log("Opened connection to MongoDB");
 });
-var db = mongoose.connection;
 
 var authRouter    = express.Router();
 var selfRouter    = express.Router();

@@ -14,6 +14,7 @@ OUTLINE:
 - remove friend (disallow if currently borrowing)
 - friends array in User model
 - books/available query needs to search friends' books arrays
+- ADD contact info to users' profiles (email?)
 
 -------------------------------------------------------------
 SPECIFICS:
@@ -43,7 +44,16 @@ new:
 
 modify:
 
-- /api/books/available GET : search friends' books
+- /api/books/available GET  : search friends' books
+- /api/self GET             : populate friends?
+- /api/self DELETE          : only allow if borrowing field empty,
+                              remove refs in friends arrays,
+                              remove refs in fr_requests_in, _out,
+                              remove refs in (book) requests,
+                              remove books via method?
+- /api/books/:bookid DELETE : use method on model
+                              remove refs in requests, borrowing
+                              ** update user to remove from books array **
 
 Client Views:
 ------------

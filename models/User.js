@@ -2,6 +2,8 @@ var mongoose = require("mongoose");
 var findOrCreate = require("mongoose-findorcreate");
 var deepPopulate = require('mongoose-deep-populate');
 
+mongoose.Promise = require("bluebird");
+
 var userSchema = new mongoose.Schema({
   _id: String,
   displayName: String,

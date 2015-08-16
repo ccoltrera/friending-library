@@ -36,7 +36,7 @@ module.exports = function(router) {
       .exec()
       .then(function(bookDoc) {
         output = bookDoc;
-        return User.findByIdAndUpdate(userId)
+        return User.findByIdAndUpdate(userId) // Are we actually updating anything here?
           .exec();
       }, function(err) {
         throw err;
@@ -50,7 +50,7 @@ module.exports = function(router) {
 
   router.get("/available", function(req, res) {
     console.log("Received GET request at /api/books/available");
-    // find all books that aren't currently requested or borrowed and don't belong to the current user
+    // find friends' books that aren't currently requested or borrowed and don't belong to the current user
     Book.find({request: "", borrower: "", owner: {$ne: req.user._id}})
       .populate("owner")
       .exec()

@@ -10,7 +10,7 @@ module.exports = function(router) {
         if (err) handle[500](err, res);
         else if (updatedBookDoc === null) res.sendStatus(404);
         else {
-          User.update({_id: req.user._id}, {$pull: {requests : req.params.bookid}}, function(err) {
+          User.update({_id: req.user._id}, {$pull: {requests: req.params.bookid}}, function(err) {
             if (err) handle[500](err, res);
             res.json(updatedBookDoc);
           });
@@ -27,7 +27,7 @@ module.exports = function(router) {
         if (bookDoc.borrower || bookDoc.request) res.sendStatus(409);
         else {
           // Update the user
-          User.update({_id: req.user._id}, {$push: {requests : req.body._id}}, function(err) {
+          User.update({_id: req.user._id}, {$push: {requests: req.body._id}}, function(err) {
             if (err) handle[500](err, res);
             else {
               Book.findByIdAndUpdate(req.body._id, {request: req.user._id}, function(err, updatedBookDoc) {
@@ -50,7 +50,7 @@ module.exports = function(router) {
         else if (bookDoc === null) res.sendStatus(404);
         else if (bookDoc.owner != req.user._id) res.sendStatus(403);
         else {
-          User.update({_id: bookDoc.request}, { $pull: {requests : req.body._id} }, function(err) {
+          User.update({_id: bookDoc.request}, {$pull: {requests: req.body._id} }, function(err) {
             if (err) handle[500](err, res);
             else {
               Book.findByIdAndUpdate(req.body._id, {request: ""}, function(err, updatedBookDoc) {
@@ -69,7 +69,7 @@ module.exports = function(router) {
         else if (bookDoc === null) res.sendStatus(404);
         else if (bookDoc.owner != req.user._id) res.sendStatus(403);
         else {
-          User.update({_id: bookDoc.request}, { $pull: {requests : req.body._id}, $push: {borrowing : req.body._id} }, function(err) {
+          User.update({_id: bookDoc.request}, {$pull: {requests: req.body._id}, $push: {borrowing: req.body._id} }, function(err) {
             if (err) handle[500](err, res);
             else {
               Book.findByIdAndUpdate(req.body._id, {borrower: bookDoc.request, request: ""}, function(err, updatedBookDoc) {
@@ -88,7 +88,7 @@ module.exports = function(router) {
         else if (bookDoc === null) res.sendStatus(404);
         else if (bookDoc.owner != req.user._id) res.sendStatus(403);
         else {
-          User.update({_id: bookDoc.borrower}, { $pull: {borrowing : req.body._id} }, function(err) {
+          User.update({_id: bookDoc.borrower}, {$pull: {borrowing: req.body._id} }, function(err) {
             if (err) handle[500](err, res);
             else {
               Book.findByIdAndUpdate(req.body._id, {borrower: ""}, function(err, updatedBookDoc) {

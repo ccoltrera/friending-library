@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 var deepPopulate = require('mongoose-deep-populate');
 
+mongoose.Promise = require('bluebird');
+
 var bookSchema = new mongoose.Schema({
   owner: {type: String, ref: "User", index: true},
   request: {type: String, ref: "User", default: ""}, // ONLY ALLOW ONE REQUEST
