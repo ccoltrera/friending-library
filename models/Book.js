@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 var deepPopulate = require('mongoose-deep-populate');
 
+mongoose.Promise = require('bluebird');
+
 var bookSchema = new mongoose.Schema({
   owner: {type: String, ref: "User", index: true},
   request: {type: String, ref: "User", default: ""}, // ONLY ALLOW ONE REQUEST
@@ -25,6 +27,40 @@ var bookSchema = new mongoose.Schema({
     small: String
   }
 });
+
+bookSchema.methods.delete = function() {
+  var User = mongoose.model('User');
+  // remove the book
+  return Book.findByIdAndRemove(this._id).exec()
+    // remove from owner.books
+    .then(function() {
+      return User.findByIdAndUpdate(this.owner,
+        {
+          $pull: {books: this._id}
+        })
+        .exec();
+    })
+    // remove from borrower.borrowing
+    .then(function() {
+      if (this.borrower) {
+        return User.findByIdAndUpdate(this.borrower,
+          {
+            $pull: {borrowing: this._id}
+          })
+          .exec();
+      } else return;
+    })
+    // remove from 'requests'
+    .then(function() {
+      if (this.request) {
+        return User.findByIdAndUpdate(this.request,
+          {
+            $pull: {requests: this._id}
+          })
+          .exec();
+      } else return;
+    });
+};
 
 bookSchema.plugin(deepPopulate);
 

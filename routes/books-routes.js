@@ -32,14 +32,10 @@ module.exports = function(router) {
     // store record of deleted book to return
     var output;
     console.log("Received DELETE request at /api/books/" + bookId);
-    Book.findByIdAndRemove(bookId)
-      .exec()
+    Book.findById(bookId).exec()
       .then(function(bookDoc) {
         output = bookDoc;
-        return User.findByIdAndUpdate(userId)
-          .exec();
-      }, function(err) {
-        throw err;
+        return bookDoc.delete(); // call instance method
       })
       .then(function() {
         res.json(output);
@@ -50,10 +46,19 @@ module.exports = function(router) {
 
   router.get("/available", function(req, res) {
     console.log("Received GET request at /api/books/available");
-    // find all books that aren't currently requested or borrowed and don't belong to the current user
-    Book.find({request: "", borrower: "", owner: {$ne: req.user._id}})
-      .populate("owner")
-      .exec()
+    // find friends' books that aren't currently requested or borrowed and don't belong to the current user
+    var friendsIds;
+    User.findById(req.user._id).exec()
+      .then(function(userDoc) {
+        // will throw ReferenceError if no doc return (handled on next 'then')
+        friendsIds = userDoc.friends;
+        return Book.find(
+          {
+            owner: {$in: friendsIds}, request: "", borrower: ""
+          })
+          .populate("owner")
+          .exec();
+      })
       .then(function(books) {
         res.json(books);
       }, function(err) {
