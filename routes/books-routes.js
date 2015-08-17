@@ -32,16 +32,10 @@ module.exports = function(router) {
     // store record of deleted book to return
     var output;
     console.log("Received DELETE request at /api/books/" + bookId);
-    Book.findByIdAndRemove(bookId)
-      .exec()
+    Book.findById(bookId).exec()
       .then(function(bookDoc) {
         output = bookDoc;
-        return User.findByIdAndUpdate(userId,
-          {
-            $pull: {books: bookId}
-          }).exec();
-      }, function(err) {
-        throw err;
+        return bookDoc.delete(); // call instance method
       })
       .then(function() {
         res.json(output);
